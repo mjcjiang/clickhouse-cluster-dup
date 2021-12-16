@@ -1,0 +1,9 @@
+# syntax=docker/dockerfile:1
+FROM yandex/clickhouse-server:latest
+COPY ./clickhouse{num} /etc/clickhouse-server
+RUN chown clickhouse /etc/clickhouse-server/config.xml
+RUN chgrp clickhouse /etc/clickhouse-server/config.xml
+RUN chmod 777 /etc/clickhouse-server/config.xml
+RUN chown clickhouse /etc/clickhouse-server/users.xml
+RUN chgrp clickhouse /etc/clickhouse-server/users.xml
+RUN chmod 777 /etc/clickhouse-server/users.xml
