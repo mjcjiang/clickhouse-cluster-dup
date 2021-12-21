@@ -8,6 +8,8 @@ ident_map = {
     "replica": 4,
     "host": 5,
     "port": 5,
+    "user": 5,
+    "password": 5,
     "zoo_node": 2,
     "zoo_host": 3,
     "zoo_port": 3,
@@ -20,6 +22,19 @@ zookeeper_temp = """
     image: zookeeper:3.5
     container_name: zookeeper{index}
     hostname: zookeeper{index}
+    networks:
+      clickhouse-network:
+        ipv4_address: 172.23.0.{net_index}
+"""
+
+multi_zookeeper_temp = """
+  zookeeper{index}:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper{index}
+    environment:
+      - ZOO_SERVER_ID={server_id}
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOO_SERVERS={zookeeper_servers}
     networks:
       clickhouse-network:
         ipv4_address: 172.23.0.{net_index}
@@ -50,6 +65,13 @@ network_temp = """networks:
         - subnet: 172.23.0.0/24
 """
 
+# gen_multi_zookeepers_str: 
+def gen_multi_zookeepers_str(zoo_num):
+    res = ""
+    for i in range(zoo_num):
+        res += "zookeeper" + str(i+1).zfill(2) + ":2888:3888,"
+    return res[:-1]
+
 # gen_zookeeper_denpend_list: zookeeper dependent string generate
 def gen_zookeeper_denpend_list(zoo_num):
     res = ""
@@ -61,14 +83,23 @@ def gen_zookeeper_denpend_list(zoo_num):
 # gen_composer_yml: generate docker-compose.yml according to node number and zookeeper number
 def gen_composer_yml(path, node_num, zoo_num):
     net_index = 10
-    res = "services:"
+    res = """version: \"3.8\"
+services:"""
     zoo_depends = gen_zookeeper_denpend_list(zoo_num)
-    
-    for i in range(zoo_num):
-        zookeeper_cur = zookeeper_temp.replace("{index}", str(i+1).zfill(2))
+
+    if zoo_num == 1:
+        zookeeper_cur = zookeeper_temp.replace("{index}", str(1).zfill(2))
         zookeeper_cur = zookeeper_cur.replace("{net_index}", str(net_index))
         res += zookeeper_cur
         net_index += 1
+    else:
+        for i in range(zoo_num):
+            zookeeper_cur = multi_zookeeper_temp.replace("{index}", str(i+1).zfill(2))
+            zookeeper_cur = zookeeper_cur.replace("{server_id}", str(i+1))
+            zookeeper_cur = zookeeper_cur.replace("{net_index}", str(net_index))
+            zookeeper_cur = zookeeper_cur.replace("{zookeeper_servers}", gen_multi_zookeepers_str(zoo_num))
+            res += zookeeper_cur
+            net_index += 1
     
     for i in range(node_num):
         clickhouse_cur = clickhouse_temp.replace("{index}", str(i+1).zfill(2))
@@ -122,6 +153,8 @@ def gen_cluster_config_str(node_num):
             res += tab_of_spaces * ident_map["replica"] + "<replica>" + "\n"
             res += tab_of_spaces * ident_map["host"] + "<host>" + "clickhouse" + str(j+1).zfill(2)  + "</host>" + "\n"
             res += tab_of_spaces * ident_map["port"] + "<port>" + str(9000)  + "</port>" + "\n"
+            res += tab_of_spaces * ident_map["user"] + "<user>" + "admin"  + "</user>" + "\n"
+            res += tab_of_spaces * ident_map["password"] + "<password>" + "Life123"  + "</password>" + "\n"
             res += tab_of_spaces * ident_map["replica"] + "</replica>" + "\n"
         res += tab_of_spaces * ident_map["shard"] + "</shard>" + "\n"
     return res
@@ -180,7 +213,6 @@ def regen_temp_config(config_path, node_str, zoo_str):
         new_content = first_half + zoo_str + second_half
     with open(config_path, "w") as new_config:
         new_config.write(new_content)
-
 
 if __name__ == "__main__":
     argv = sys.argv[1:]  

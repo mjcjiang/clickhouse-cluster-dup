@@ -40,20 +40,28 @@
                 <replica>
                     <host>clickhouse01</host>
                     <port>9000</port>
+                    <user>admin</user>
+                    <password>Life123</password>
                 </replica>
                 <replica>
                     <host>clickhouse02</host>
                     <port>9000</port>
+                    <user>admin</user>
+                    <password>Life123</password>
                 </replica>
             </shard>
             <shard>
                 <replica>
                     <host>clickhouse03</host>
                     <port>9000</port>
+                    <user>admin</user>
+                    <password>Life123</password>
                 </replica>
                 <replica>
                     <host>clickhouse04</host>
                     <port>9000</port>
+                    <user>admin</user>
+                    <password>Life123</password>
                 </replica>
             </shard>
         </clickhouse_cluster>
@@ -62,10 +70,6 @@
     <zookeeper>
         <node index="1">
             <host>zookeeper01</host>
-            <port>2181</port>
-        </node>
-        <node index="2">
-            <host>zookeeper02</host>
             <port>2181</port>
         </node>
     </zookeeper>

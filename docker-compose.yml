@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   zookeeper01:
     image: zookeeper:3.5
@@ -7,27 +8,18 @@ services:
       clickhouse-network:
         ipv4_address: 172.23.0.10
 
-  zookeeper02:
-    image: zookeeper:3.5
-    container_name: zookeeper02
-    hostname: zookeeper02
-    networks:
-      clickhouse-network:
-        ipv4_address: 172.23.0.11
-
   clickhouse01:
     image: redmagic039/clickhouse01:latest
     container_name: clickhouse01
     hostname: clickhouse01
     networks:
       clickhouse-network:
-        ipv4_address: 172.23.0.12
+        ipv4_address: 172.23.0.11
     ports:
       - "127.0.0.1:8123:8123"
       - "127.0.0.1:9000:9000"
     depends_on:
       - zookeeper01
-      - zookeeper02
 
 
   clickhouse02:
@@ -36,11 +28,10 @@ services:
     hostname: clickhouse02
     networks:
       clickhouse-network:
-        ipv4_address: 172.23.0.13
+        ipv4_address: 172.23.0.12
     
     depends_on:
       - zookeeper01
-      - zookeeper02
 
 
   clickhouse03:
@@ -49,11 +40,10 @@ services:
     hostname: clickhouse03
     networks:
       clickhouse-network:
-        ipv4_address: 172.23.0.14
+        ipv4_address: 172.23.0.13
     
     depends_on:
       - zookeeper01
-      - zookeeper02
 
 
   clickhouse04:
@@ -62,11 +52,10 @@ services:
     hostname: clickhouse04
     networks:
       clickhouse-network:
-        ipv4_address: 172.23.0.15
+        ipv4_address: 172.23.0.14
     
     depends_on:
       - zookeeper01
-      - zookeeper02
 
 networks:
   clickhouse-network:
