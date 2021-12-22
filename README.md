@@ -175,6 +175,8 @@ Yeah! Now we can use the docker images any where(Just make sure you can connect 
 ## 4.oh! the cluster:
 ### 4.1 make a swarm:
 You can check another article about how to create a swarm and put some services on it:
+
 https://mjcjiang.github.io/2021/12/14/a-simple-taste-of-docker-swarm.html
+
 I just give a snapshot of my swarm:
 ![my_swarm](./pics/my_swarm.png)
