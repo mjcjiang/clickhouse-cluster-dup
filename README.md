@@ -12,5 +12,5 @@ and zookeeper number, the toolset will generate all the infrastructures for you.
 In this article, we will build a three node clickhouse cluster(1 manager, 2 worker). The manager node will distribute
 4 clickhouse containers(2 shards, 2 replicas each shard) to worker nodes. Also, the manager will distribute 2 zookeeper
 containers to work nodes. The structure of the cluster:
-![clickhouse-cluster][./pics/cluster_structure.png]
+![clickhouse-cluster](./pics/cluster_structure.png)
 
