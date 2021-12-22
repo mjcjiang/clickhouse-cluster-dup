@@ -180,3 +180,7 @@ https://mjcjiang.github.io/2021/12/14/a-simple-taste-of-docker-swarm.html
 
 I just give a snapshot of my swarm:
 ![my_swarm](./pics/my_swarm.png)
+
+* jingle-243 is manager, *Drain* tell that no task will be allocated for him.
+* jingle-245 and jingle-246 is work node, *Active* tell that tasks can be allocated for them.
+* all docker engine's version is 20.10.7, which is the latest when i write this article.
