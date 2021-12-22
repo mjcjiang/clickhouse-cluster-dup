@@ -15,3 +15,4 @@ containers to work nodes. The structure of the cluster is:
 
 ![clickhouse-cluster](./pics/cluster_structure.png)
 
+Wow! The privious picture just captures a state of the cluster, the real cluster may present some different topological structure.
