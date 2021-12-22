@@ -114,7 +114,7 @@ networks:
 Check config.xml in one of the *clickhouse0x* dir, you will find the fillowing xml configs.
 There are all messages about the cluster. Want to know the meaning behind them？ Check this:
 
-https://clickhouse.com/docs/en/sql-reference/table-functions/cluster/
+https://clickhouse.com/docs/en/getting-started/tutorial/
 ```
     <remote_servers>
         <clickhouse_cluster>
