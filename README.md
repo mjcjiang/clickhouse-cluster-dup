@@ -6,7 +6,7 @@ and zookeeper number, the toolset will generate all the infrastructures for you.
 * python > 3.8
 * docker desktop(Windows, Macos, Linux) and docker runtime
 * docker hub account (if you do not have, quick register one!)
-* three node(bare metal or virtual) which each member can ping with each other
+* three node(bare metal or virtual) which each member can ping with each other and have docker installed!
 
 ## 2.cluster topology:
 In this article, we will build a three node clickhouse cluster(1 manager, 2 worker). The manager node will distribute
@@ -171,3 +171,10 @@ https://clickhouse.com/docs/en/sql-reference/table-functions/cluster/
 The script will build and push clickhouse images to docker hub. Now check them:
 ![docker_hub](./pics/docker_hub.png)
 Yeah! Now we can use the docker images any where(Just make sure you can connect the Internet!).
+
+## 4.oh! the cluster:
+### 4.1 make a swarm:
+You can check another article about how to create a swarm and put some services on it:
+https://mjcjiang.github.io/2021/12/14/a-simple-taste-of-docker-swarm.html
+I just give a snapshot of my swarm:
+![my_swarm](./pics/my_swarm.png)
