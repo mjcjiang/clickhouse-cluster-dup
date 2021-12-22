@@ -22,10 +22,11 @@ The *infra_construct.py* script do the following tasks:
 * build out clickhouse images and push to docker hub;
 * gen *docker-compose.yml* for docker swarm;
 
+run the following command:
 ```bash
 python infra_construct.py -s 2 -z 2
 ```
-* -s shard number
-* -z zookeeper number
+1. -s: shard number
+2. -z: zookeeper number
 
 ![infra_run](./pics/infra_run.png)
