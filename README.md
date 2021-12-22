@@ -2,13 +2,13 @@
 AlienSwarm is a toolset to build *clickhouse* data cluster. You can freely choose your shard number 
 and zookeeper number, the toolset will generate all the infrastructures for you.
 
-## 1.requirments:
+## 1. Requirments:
 * python > 3.8
 * docker desktop(Windows, Macos, Linux) and docker runtime
 * docker hub account (if you do not have, quick register one!)
 * three node(bare metal or virtual) which each member can ping with each other and have docker installed!
 
-## 2.cluster topology:
+## 2. Cluster topology:
 In this article, we will build a three node clickhouse cluster(1 manager, 2 worker). The manager node will distribute
 4 clickhouse containers(2 shards, 2 replicas each shard) to worker nodes. Also, the manager will distribute 2 zookeeper
 containers to work nodes. The structure of the cluster is:
@@ -17,7 +17,7 @@ containers to work nodes. The structure of the cluster is:
 
 Wow! The privious picture just captures a state of the cluster, the real cluster may present some different topological structure.
 
-## 3.infra construct:
+## 3. Infra construct:
 The *infra_construct.py* script do the following tasks:
 * build out clickhouse images and push to docker hub;
 * gen *docker-compose.yml* for docker swarm;
@@ -172,7 +172,7 @@ The script will build and push clickhouse images to docker hub. Now check them:
 ![docker_hub](./pics/docker_hub.png)
 Yeah! Now we can use the docker images any where(Just make sure you can connect the Internet!).
 
-## 4.oh! the cluster:
+## 4. Oh! the cluster:
 ### 4.1 make a swarm:
 You can check another article about how to create a swarm and put some services on it:
 
@@ -247,3 +247,7 @@ CONTAINER ID   IMAGE                             COMMAND                  CREATE
 b293b94cf0fb   redmagic039/clickhouse03:latest   "/entrypoint.sh"         6 minutes ago   Up 6 minutes   8123/tcp, 9000/tcp, 9009/tcp             clickdemo_clickhouse03.1.kpxr1eu6brahcmu8kxhm73g8q
 95fd911d1d55   bitnami/zookeeper:latest          "/opt/bitnami/script…"   6 minutes ago   Up 6 minutes   2181/tcp, 2888/tcp, 3888/tcp, 8080/tcp   clickdemo_zookeeper01.1.qzxo35of44wmpjah5hekx6xyw
 ```
+
+## 5. Epilogue:
+Create a cluster in bare metal is not easy! But if you hacking to a *DIY* mode, that can be so much fun!
+Try it hard! Dear friends！:) :tada:
