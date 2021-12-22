@@ -72,6 +72,10 @@
             <host>zookeeper01</host>
             <port>2181</port>
         </node>
+        <node index="2">
+            <host>zookeeper02</host>
+            <port>2181</port>
+        </node>
     </zookeeper>
 
     <macros>
