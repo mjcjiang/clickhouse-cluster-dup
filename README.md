@@ -167,3 +167,7 @@ https://clickhouse.com/docs/en/sql-reference/table-functions/cluster/
     </macros>
 ```
 
+### 3.3 docker iamges:
+The script will build and push clickhouse images to docker hub. Now check them:
+![docker_hub](./pics/docker_hub.png)
+Yeah! Now we can use the docker images any where(Just make sure you can connect the Internet!).
