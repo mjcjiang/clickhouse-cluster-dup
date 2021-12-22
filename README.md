@@ -184,3 +184,66 @@ I just give a snapshot of my swarm:
 * jingle-243 is manager, *Drain* tell that no task will be allocated for him.
 * jingle-245 and jingle-246 is work node, *Active* tell that tasks can be allocated for them.
 * all docker engine's version is 20.10.7, which is the latest when i write this article.
+
+### 4.2 clean the worker nodes:
+Before create the cluster, clean out clickhouse images in working node:
+``` bash
+sudo docker images | grep clickhouse | tr -s " " | cut -d " " -f 3 | xargs sudo docker image rm
+```
+### 4.3 create the cluster
+Scp docker-compose.yml to a directory in manage node:
+``` bash
+scp docker-compose.yml jingle@192.168.222.243:~/hjiang/click
+```
+
+*Cd* to jingle-243:~/hjiang/click, and run the following command:
+``` bash
+sudo docker stack deploy --compose-file docker-compose.yml clickdemo
+
+WARN[0000] ignoring IP-address (127.0.0.1:8123:8123/tcp) service will listen on '0.0.0.0'
+WARN[0000] ignoring IP-address (127.0.0.1:9000:9000/tcp) service will listen on '0.0.0.0'
+Creating network clickhouse-network
+Creating service clickdemo_clickhouse02
+Creating service clickdemo_clickhouse03
+Creating service clickdemo_clickhouse04
+Creating service clickdemo_zookeeper01
+Creating service clickdemo_zookeeper02
+Creating service clickdemo_clickhouse01
+```
+
+Ok, some [WARNING] happens, but that's ok. Now, check the cluster:
+``` bash
+sudo docker service ls
+
+ID             NAME                     MODE         REPLICAS   IMAGE                             PORTS
+pc25bves7tdv   clickdemo_clickhouse01   replicated   1/1        redmagic039/clickhouse01:latest   *:8123->8123/tcp, *:9000->9000/tcp
+5zyhkjivvo3l   clickdemo_clickhouse02   replicated   1/1        redmagic039/clickhouse02:latest
+vtwk6pphlc95   clickdemo_clickhouse03   replicated   1/1        redmagic039/clickhouse03:latest
+zkdf2k3v3c6e   clickdemo_clickhouse04   replicated   1/1        redmagic039/clickhouse04:latest
+uvlxohh71fnq   clickdemo_zookeeper01    replicated   1/1        bitnami/zookeeper:latest
+wqiltbrq8w0x   clickdemo_zookeeper02    replicated   1/1        bitnami/zookeeper:latest
+```
+some tips here:
+* 1/1 tell one replicas of the task, and one is running.
+* clickdemo_clickhouse01 is a service name
+
+Now we check the status of working node:
+* 245:
+```
+sudo docker ps
+
+CONTAINER ID   IMAGE                             COMMAND                  CREATED         STATUS         PORTS                                    NAMES
+bf38a8dade27   bitnami/zookeeper:latest          "/opt/bitnami/script…"   5 minutes ago   Up 5 minutes   2181/tcp, 2888/tcp, 3888/tcp, 8080/tcp   clickdemo_zookeeper02.1.lf8d69j9q21ufxiij4if2cvfe
+de4468c8d2cf   redmagic039/clickhouse04:latest   "/entrypoint.sh"         5 minutes ago   Up 5 minutes   8123/tcp, 9000/tcp, 9009/tcp             clickdemo_clickhouse04.1.9m4brxvzdqb9y3wcskbkz531v
+f0408ea82208   redmagic039/clickhouse02:latest   "/entrypoint.sh"         6 minutes ago   Up 5 minutes   8123/tcp, 9000/tcp, 9009/tcp             clickdemo_clickhouse02.1.7yq7ti76q84gum1hswzg596l6
+```
+
+* 246:
+```
+sudo docker ps
+
+CONTAINER ID   IMAGE                             COMMAND                  CREATED         STATUS         PORTS                                    NAMES
+3b148f8b9efe   redmagic039/clickhouse01:latest   "/entrypoint.sh"         6 minutes ago   Up 6 minutes   8123/tcp, 9000/tcp, 9009/tcp             clickdemo_clickhouse01.1.pyi9a65nzusxdtcjpgm9rx5jk
+b293b94cf0fb   redmagic039/clickhouse03:latest   "/entrypoint.sh"         6 minutes ago   Up 6 minutes   8123/tcp, 9000/tcp, 9009/tcp             clickdemo_clickhouse03.1.kpxr1eu6brahcmu8kxhm73g8q
+95fd911d1d55   bitnami/zookeeper:latest          "/opt/bitnami/script…"   6 minutes ago   Up 6 minutes   2181/tcp, 2888/tcp, 3888/tcp, 8080/tcp   clickdemo_zookeeper01.1.qzxo35of44wmpjah5hekx6xyw
+```
