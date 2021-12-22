@@ -33,7 +33,7 @@ The following is a snapshot of the command:
 ![infra_run](./pics/infra_run.png)
 
 Now, check the result:
-### 3.1 docker hub:
+### 3.1 docker-compose.yml:
 If the script running finish and no error occur during the process, a *docker-composer.yml* will be generated in 
 the working directory. 
 ```
@@ -110,4 +110,60 @@ networks:
         - subnet: 172.23.0.0/24
 ```
 
+### 3.2 config.xml for clickhouse
+Check config.xml in one of the *clickhouse0x* dir, you will find the fillowing xml configs.
+There are all messages about the cluster. Want to know the meaning behind them？ Check this:
+
+https://clickhouse.com/docs/en/sql-reference/table-functions/cluster/
+```
+    <remote_servers>
+        <clickhouse_cluster>
+            <shard>
+                <replica>
+                    <host>clickhouse01</host>
+                    <port>9000</port>
+                    <user>admin</user>
+                    <password>Life123</password>
+                </replica>
+                <replica>
+                    <host>clickhouse02</host>
+                    <port>9000</port>
+                    <user>admin</user>
+                    <password>Life123</password>
+                </replica>
+            </shard>
+            <shard>
+                <replica>
+                    <host>clickhouse03</host>
+                    <port>9000</port>
+                    <user>admin</user>
+                    <password>Life123</password>
+                </replica>
+                <replica>
+                    <host>clickhouse04</host>
+                    <port>9000</port>
+                    <user>admin</user>
+                    <password>Life123</password>
+                </replica>
+            </shard>
+        </clickhouse_cluster>
+    </remote_servers>
+
+    <zookeeper>
+        <node index="1">
+            <host>zookeeper01</host>
+            <port>2181</port>
+        </node>
+        <node index="2">
+            <host>zookeeper02</host>
+            <port>2181</port>
+        </node>
+    </zookeeper>
+
+    <macros>
+        <cluster>clickhouse_cluster</cluster>
+        <shard>01</shard>
+        <replica>clickhouse01</replica>
+    </macros>
+```
 
