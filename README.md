@@ -123,13 +123,13 @@ https://clickhouse.com/docs/en/getting-started/tutorial/
                     <host>clickhouse01</host>
                     <port>9000</port>
                     <user>admin</user>
-                    <password>Life123</password>
+                    <password>Wife123</password>
                 </replica>
                 <replica>
                     <host>clickhouse02</host>
                     <port>9000</port>
                     <user>admin</user>
-                    <password>Life123</password>
+                    <password>Wife123</password>
                 </replica>
             </shard>
             <shard>
@@ -137,13 +137,13 @@ https://clickhouse.com/docs/en/getting-started/tutorial/
                     <host>clickhouse03</host>
                     <port>9000</port>
                     <user>admin</user>
-                    <password>Life123</password>
+                    <password>Wife123</password>
                 </replica>
                 <replica>
                     <host>clickhouse04</host>
                     <port>9000</port>
                     <user>admin</user>
-                    <password>Life123</password>
+                    <password>Wife123</password>
                 </replica>
             </shard>
         </clickhouse_cluster>
