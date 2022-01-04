@@ -46,6 +46,8 @@ clickhouse_temp = """
       clickhouse-network:
         ipv4_address: 172.23.0.{net_index}
     {port_str}
+    volumes:
+      - /mnt/NAS/sda/ShareFolder/clickhouse/clickhouse{index}:/var/lib/clickhouse
     depends_on:
 {zoo_keepers}
 """
@@ -219,7 +221,7 @@ def help():
     print("  python images_gen.py -s 2 -z 1")
     print("    :-s shard_number, node_number = 2 * shard_number")
     print("    :-z zookeeper_number")
-        
+
 if __name__ == "__main__":
     argv = sys.argv[1:]  
     opts, args = getopt.getopt(argv, "s:z:h", ["shard_num =", "zookeeper_num ="])
